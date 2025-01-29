@@ -93,7 +93,7 @@ class Overworld:
                 self.player_direction = "up"
 
             # Update the camera to follow the player
-            self.camera.update(int(self.player_x // self.tile_size), int(self.player_y // self.tile_size), self.tile_size)
+            self.camera.update(self.player_x, self.player_y)
         else:
             print("Position is not walkable.")
             self.is_moving = False  # Player is idle
@@ -132,7 +132,7 @@ class Camera:
         self.x = 0  # Top-left corner of the viewport
         self.y = 0  # Top-left corner of the viewport
 
-    def update(self, player_x, player_y, tile_size):
+    def update(self, player_x, player_y):
         """Center the camera on the player while staying within map bounds."""
         self.x = max(0, min(player_x - self.width // 2, self.map_width - self.width))
         self.y = max(0, min(player_y - self.height // 2, self.map_height - self.height))
