@@ -35,13 +35,15 @@ while running:
 
     # If no keys are pressed, set is_moving to False
     if dx == 0 and dy == 0:
-        overworld.is_moving = False
+        overworld.is_moving = False  
 
     # Draw everything
     screen.fill((0, 0, 0))
     overworld.draw_map()
     overworld.draw_player(dt)
     pygame.display.flip()
+
+    overworld.camera.update(overworld.player_x, overworld.player_y)
 
     clock.tick(30)  # Limit to 30 FPS
 

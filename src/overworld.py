@@ -38,8 +38,12 @@ class Overworld:
             if hasattr(layer, "tiles"):  # Ensure it's a tile layer
                 for x, y, image in layer.tiles():  # Directly get image from tiles()
                     if image:  # Only draw if the tile has an image
+                        # Convert tile world position to screen position
                         screen_x, screen_y = self.camera.apply(x * self.tile_size, y * self.tile_size)
-                        if 0 <= screen_x < self.camera.width and 0 <= screen_y < self.camera.height:
+
+                        # **Render extra tiles slightly offscreen to prevent gaps**
+                        buffer = self.tile_size  # Extra padding (40 pixels) to render beyond screen edges
+                        if -buffer <= screen_x < self.camera.width + buffer and -buffer <= screen_y < self.camera.height + buffer:
                             self.screen.blit(image, (screen_x, screen_y))
 
 
@@ -91,9 +95,6 @@ class Overworld:
                 self.player_direction = "down"
             elif dy < 0:
                 self.player_direction = "up"
-
-            # Update the camera to follow the player
-            self.camera.update(self.player_x, self.player_y)
         else:
             print("Position is not walkable.")
             self.is_moving = False  # Player is idle
